@@ -1,17 +1,14 @@
 ///<reference types = "cypress"/>
+import { realizarLogin } from '/cypress/support/login.js';
 
 describe("Realizar Login", () => {
-
+    //const login = new LoginPage();
     before(() => {
         cy.visit('https://seubarriga.wcaquino.me/')
     })
 
     it("Realizar Login com sucesso", () => {
-        cy.get('#email')
-            .type("testeemail@email.com")
-        cy.get('#senha')
-            .type("123456")
-        cy.get('.btn').click();
+        realizarLogin();
 
         cy.get('.alert')
             .should("be.visible")

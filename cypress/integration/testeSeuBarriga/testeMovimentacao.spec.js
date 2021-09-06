@@ -1,28 +1,23 @@
+import { MovimentacaoPage, getMsg, getMsgLista } from '/cypress/support/pages/movimentacaoPage.js';
+import { realizarLogin } from '/cypress/support/login.js';
 
 describe("Validar Campos Obrigatórios", () => {
-
+    const movimentacao = new MovimentacaoPage();
     before(() => {
-        cy.visit('https://seubarriga.wcaquino.me/')
+        cy.visit('/movimentacao')
     })
     beforeEach(() => {
         cy.reload();
+        realizarLogin();
 
-        cy.get('#email')
-            .type("testeemail@email.com")
-        cy.get('#senha')
-            .type("123456")
-        cy.get('.btn').click();
-
-        cy.get(':nth-child(3) > a').click();
+        movimentacao.acessarMenu();
     })
 
     it("Validar campos obrigatórios", () => {
-        cy.get('.btn')
-            .click()
-        cy.get('.alert > ul > li').should("have.length", 6)
+        movimentacao.salvarSemPreencherCampos();
 
-
-        cy.get('.alert > ul > li')
+        getMsgLista().should("have.length", 6)
+        getMsgLista()
             .each(() => {
                 let i = 1;
                 cy.get('body > div.alert.alert-danger > ul > li:nth-child(' + i + ')').invoke('text')
@@ -36,97 +31,42 @@ describe("Validar Campos Obrigatórios", () => {
             })
     })
 
-    it("Validar campo obrigatório - Data transiçao", () => {
-        cy.get('#data_pagamento')
-            .type("19/08/2021")
-        cy.get('#descricao')
-            .type("Teste Valor")
-        cy.get('#interessado')
-            .type("Gloria")
-        cy.get('#valor')
-            .type(150)
-        cy.get('#status_pago')
-            .click()
-        cy.get('.btn')
-            .click();
+    it("Validar campo obrigatório - Data Movimentação", () => {
+        movimentacao.validarCampoDataMovimentacao();
 
-        cy.get('.alert > ul > li')
+        getMsgLista()
             .should("have.length", 1)
             .should("have.text", "Data da Movimentação é obrigatório")
     })
 
     it("Validar campo obrigatório - Data Pagamento", () => {
-        cy.get('#data_transacao')
-            .type("19/08/2021")
-        cy.get('#descricao')
-            .type("Teste Valor")
-        cy.get('#interessado')
-            .type("Gloria")
-        cy.get('#valor')
-            .type(150)
-        cy.get('#status_pago')
-            .click()
-        cy.get('.btn')
-            .click();
+        movimentacao.validarCampoDataPagamento();
 
-        cy.get('.alert > ul > li')
+        getMsgLista()
             .should("have.length", 1)
             .should("have.text", "Data do pagamento é obrigatório")
     })
 
     it("Validar campo obrigatório - Descrição", () => {
-        cy.get('#data_transacao')
-            .type("19/08/2021")
-        cy.get('#data_pagamento')
-            .type("29/08/2021")
-        cy.get('#interessado')
-            .type("Gloria")
-        cy.get('#valor')
-            .type(150)
-        cy.get('#status_pago')
-            .click()
-        cy.get('.btn')
-            .click();
+        movimentacao.validarCampoDescricao();
 
-        cy.get('.alert > ul > li')
+        getMsgLista()
             .should("have.length", 1)
             .should("have.text", "Descrição é obrigatório")
     })
 
     it("Validar campo obrigatório - Interessado", () => {
-        cy.get('#data_transacao')
-            .type("19/08/2021")
-        cy.get('#data_pagamento')
-            .type("29/08/2021")
-        cy.get('#descricao')
-            .type("Teste Valor")
-        cy.get('#valor')
-            .type(150)
-        cy.get('#status_pago')
-            .click()
-        cy.get('.btn')
-            .click();
+        movimentacao.validarCampoInteressado();
 
-        cy.get('.alert > ul > li')
+        getMsgLista()
             .should("have.length", 1)
             .should("have.text", "Interessado é obrigatório")
     })
 
     it("Validar campo obrigatório - Valor", () => {
-        cy.get('#data_transacao')
-            .type("19/08/2021")
-        cy.get('#data_pagamento')
-            .type("29/08/2021")
-        cy.get('#descricao')
-            .type("Teste Valor")
-        cy.get('#interessado')
-            .type("Gloria")
-        cy.get('#status_pago')
-            .click()
-        cy.get('.btn')
-            .click();
+        movimentacao.validarCampoValor();
 
-        cy.get('.alert > ul > li')
+        getMsgLista()
             .should("have.length", 2)
             .each(() => {
                 let i = 1;
@@ -137,50 +77,32 @@ describe("Validar Campos Obrigatórios", () => {
     })
 
     it("Validar campo 'Valor'", () => {
-        cy.get('#tipo')
-            .select("Despesa")
-        cy.get('#data_transacao')
-            .type("29/08/2021")
-        cy.get('#data_pagamento')
-            .type("31/08/2021")
-        cy.get('#descricao')
-            .type("Teste Valor")
-        cy.get('#interessado')
-            .type("Gloria")
-        cy.get('#valor')
-            .type("Mil e quinhentos")
-        cy.get('#status_pago')
-            .click()
-        cy.get('.btn')
-            .click();
+        movimentacao.validarTipoCampoValor();
 
-        cy.get('.alert > ul > li')
+        getMsgLista()
             .should("have.text", "Valor deve ser um número")
     })
 
 })
 
 describe("Validar movimentação", () => {
+    const movimentacao = new MovimentacaoPage();
+
+    before(() => {
+        cy.visit('/movimentacao')
+    })
+    beforeEach(() => {
+        cy.reload();
+
+        realizarLogin();
+
+        movimentacao.acessarMenu();
+    })
 
     it("Criar movimentação com sucesso", () => {
-        cy.get('#tipo')
-            .select("Despesa")
-        cy.get('#data_transacao')
-            .type("15/08/2021")
-        cy.get('#data_pagamento')
-            .type("20/08/2021")
-        cy.get('#descricao')
-            .type("Teste 30-08")
-        cy.get('#interessado')
-            .type("Gloria")
-        cy.get('#valor')
-            .type("180")
-        cy.get('#status_pendente')
-            .click()
-        cy.get('.btn')
-            .click();
+        movimentacao.salvarMovimentacaoSucesso();
 
-        cy.get('.alert')
+        getMsg()
             .should("have.text", "Movimentação adicionada com sucesso!")
     })
 })

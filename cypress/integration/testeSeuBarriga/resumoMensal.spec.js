@@ -1,23 +1,23 @@
+import { ResumoMensal } from '/cypress/support/pages/resumoMensal.js';
+import { realizarLogin } from '/cypress/support/login.js';
+
 describe("Validar Resumo Mensal", () => {
+    const resumoMensal = new ResumoMensal();
 
     before(() => {
-        cy.visit('https://seubarriga.wcaquino.me/')
+        cy.visit('/extrato')
     })
     beforeEach(() => {
         cy.reload();
 
-        cy.get('#email')
-            .type("testeemail@email.com")
-        cy.get('#senha')
-            .type("123456")
-        cy.get('.btn').click();
+        realizarLogin();
 
-        cy.get(':nth-child(4) > a').click();
+        resumoMensal.acessarMenu();
     })
 
-    it("Verificar movimentaçao cadastrada", () => {
-        cy.get('tbody > tr > :nth-child(1)')
-            .should("have.text", "Teste movimentaçao")
+    it("Verificar movimentaçao cadastrada - Mes atual", () => {
+        resumoMensal.getDescricao()
+            .should("contain", "Teste movimentaçao")
     })
 
 
