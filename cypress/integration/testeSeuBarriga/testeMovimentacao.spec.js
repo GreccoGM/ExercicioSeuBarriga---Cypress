@@ -1,4 +1,4 @@
-import { MovimentacaoPage, getMsg, getMsgLista } from '/cypress/support/pages/movimentacaoPage.js';
+import { MovimentacaoPage, getMsg, getMsgLista, salvarMovimentacao } from '/cypress/support/pages/movimentacaoPage.js';
 import { realizarLogin } from '/cypress/support/login.js';
 
 describe("Validar Campos Obrigatórios", () => {
@@ -14,24 +14,27 @@ describe("Validar Campos Obrigatórios", () => {
     })
 
     it("Validar campos obrigatórios", () => {
-        movimentacao.salvarSemPreencherCampos();
+        let i = 1;
 
+        salvarMovimentacao();
         getMsgLista().should("have.length", 6)
         getMsgLista()
             .each(() => {
-                let i = 1;
+                const msg = ["Data da Movimentação é obrigatório",
+                    "Data do pagamento é obrigatório",
+                    "Descrição é obrigatório",
+                    "Interessado é obrigatório",
+                    "Valor é obrigatório",
+                    "Valor deve ser um número"]
+
                 cy.get('body > div.alert.alert-danger > ul > li:nth-child(' + i + ')').invoke('text')
-                    .should("to.be.oneOf", ["Data da Movimentação é obrigatório",
-                        "Data do pagamento é obrigatório",
-                        "Descrição é obrigatório",
-                        "Interessado é obrigatório",
-                        "Valor é obrigatório",
-                        "Valor deve ser um número"])
+                    .should("contain", msg[i - 1])
+
                 i++;
             })
     })
 
-    it("Validar campo obrigatório - Data Movimentação", () => {
+    it("Validar campo obrigatório - 'Data Movimentação'", () => {
         movimentacao.validarCampoDataMovimentacao();
 
         getMsgLista()
@@ -39,7 +42,7 @@ describe("Validar Campos Obrigatórios", () => {
             .should("have.text", "Data da Movimentação é obrigatório")
     })
 
-    it("Validar campo obrigatório - Data Pagamento", () => {
+    it("Validar campo obrigatório - 'Data Pagamento'", () => {
         movimentacao.validarCampoDataPagamento();
 
         getMsgLista()
@@ -47,7 +50,7 @@ describe("Validar Campos Obrigatórios", () => {
             .should("have.text", "Data do pagamento é obrigatório")
     })
 
-    it("Validar campo obrigatório - Descrição", () => {
+    it("Validar campo obrigatório - 'Descrição'", () => {
         movimentacao.validarCampoDescricao();
 
         getMsgLista()
@@ -55,7 +58,7 @@ describe("Validar Campos Obrigatórios", () => {
             .should("have.text", "Descrição é obrigatório")
     })
 
-    it("Validar campo obrigatório - Interessado", () => {
+    it("Validar campo obrigatório - 'Interessado'", () => {
         movimentacao.validarCampoInteressado();
 
         getMsgLista()
@@ -63,16 +66,17 @@ describe("Validar Campos Obrigatórios", () => {
             .should("have.text", "Interessado é obrigatório")
     })
 
-    it("Validar campo obrigatório - Valor", () => {
+    it("Validar campo obrigatório - 'Valor'", () => {
         movimentacao.validarCampoValor();
+        let i = 1;
 
         getMsgLista()
             .should("have.length", 2)
             .each(() => {
-                let i = 1;
                 cy.get('body > div.alert.alert-danger > ul > li:nth-child(' + i + ')').invoke('text')
                     .should("to.be.oneOf", ["Valor é obrigatório",
                         "Valor deve ser um número"])
+                i++;
             })
     })
 

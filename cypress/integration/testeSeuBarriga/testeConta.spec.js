@@ -1,4 +1,4 @@
-import { ContaPage, getMsg, getTabelaContas } from '/cypress/support/pages/contaPage.js';
+import { ContaPage, getMsg, getTabelaContas, clicarMenuListar } from '/cypress/support/pages/contaPage.js';
 import { realizarLogin } from '/cypress/support/login.js';
 
 describe("Teste Conta", () => {
@@ -11,7 +11,7 @@ describe("Teste Conta", () => {
         realizarLogin();
     })
 
-    it("Cadastrar conta sem nome", () => {
+    it("Validar cadastro conta sem nome", () => {
         conta.salvarContaSemNome();
 
         getMsg()
@@ -19,7 +19,7 @@ describe("Teste Conta", () => {
             .should("have.text", "Informe o nome da conta")
     })
 
-    it("Cadastrar conta com sucesso", () => {
+    it("Validar cadastro de conta com sucesso", () => {
         conta.salvarContaSucesso();
 
         getMsg()
@@ -27,14 +27,14 @@ describe("Teste Conta", () => {
             .should("have.text", "Conta adicionada com sucesso!")
     })
 
-    it("Verificar lista de contas", () => {
-        conta.validarListaContas();
+    it("Validar lista de contas", () => {
+        clicarMenuListar();
 
         getTabelaContas()
             .should('not.have.length', 0)
     })
 
-    it("Validar edição de conta", () => {
+    it("Validar sucesso edição de conta", () => {
         conta.editarContaSucesso();
 
         getMsg()
@@ -42,7 +42,7 @@ describe("Teste Conta", () => {
             .should("have.text", "Conta alterada com sucesso!")
     })
 
-    it("Validar exclusão de conta", () => {
+    it("Validar sucesso exclusão de conta", () => {
         conta.excluirContaSucesso();
 
         getMsg()

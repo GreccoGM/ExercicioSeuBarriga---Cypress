@@ -50,7 +50,7 @@ function clicarMenuAdicionar() {
         .click()
 };
 
-function clicarMenuListar() {
+export function clicarMenuListar() {
     cy.get(elementos.CONTA.menuConta)
         .click();
     cy.get(elementos.CONTA.menuListar)

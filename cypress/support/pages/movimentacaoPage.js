@@ -7,109 +7,83 @@ export class MovimentacaoPage {
         cy.get(elementos.MOVIMENTACAO.menuMovimentacao).click();
     };
 
-    salvarSemPreencherCampos() {
-        return salvarMovimentacao();
-    };
-
     validarCampoDataMovimentacao() {
-        cy.get(elementos.MOVIMENTACAO.tipo).select("Receita")
-        cy.get(elementos.MOVIMENTACAO.dataPagamento).type("19/08/2021")
-        cy.get(elementos.MOVIMENTACAO.descricao).type(faker.random.word())
-        cy.get(elementos.MOVIMENTACAO.interessado).type(faker.name.firstName())
-        cy.get(elementos.MOVIMENTACAO.valor).type(faker.finance.routingNumber())
-        cy.get(elementos.MOVIMENTACAO.conta).select("Mathew Lueilwitz")
-        cy.get(elementos.MOVIMENTACAO.statusPago).click()
+        preencherCampos();
+        cy.get(elementos.MOVIMENTACAO.dataMovimentacao).clear();
         salvarMovimentacao();
     }
 
     validarCampoDataPagamento() {
-        cy.get(elementos.MOVIMENTACAO.tipo).select("Receita")
-        cy.get(elementos.MOVIMENTACAO.dataMovimentacao).type("19/08/2021")
-        cy.get(elementos.MOVIMENTACAO.descricao).type(faker.random.word())
-        cy.get(elementos.MOVIMENTACAO.interessado).type(faker.name.firstName())
-        cy.get(elementos.MOVIMENTACAO.valor).type(faker.finance.routingNumber())
-        cy.get(elementos.MOVIMENTACAO.conta).select("Mathew Lueilwitz")
-        cy.get(elementos.MOVIMENTACAO.statusPago).click()
+        preencherCampos();
+        cy.get(elementos.MOVIMENTACAO.dataPagamento).clear();
         salvarMovimentacao();
     }
 
     validarCampoDescricao() {
-        cy.get(elementos.MOVIMENTACAO.tipo).select("Receita")
-        cy.get(elementos.MOVIMENTACAO.dataMovimentacao).type("19/08/2021")
-        cy.get(elementos.MOVIMENTACAO.dataPagamento).type("30/08/2021")
-        cy.get(elementos.MOVIMENTACAO.interessado).type(faker.name.firstName())
-        cy.get(elementos.MOVIMENTACAO.valor).type(faker.finance.routingNumber())
-        cy.get(elementos.MOVIMENTACAO.conta).select("Mathew Lueilwitz")
-        cy.get(elementos.MOVIMENTACAO.statusPago).click()
+        preencherCampos();
+        cy.get(elementos.MOVIMENTACAO.descricao).clear();
         salvarMovimentacao();
     }
 
     validarCampoInteressado() {
-        cy.get(elementos.MOVIMENTACAO.tipo).select("Receita")
-        cy.get(elementos.MOVIMENTACAO.dataMovimentacao).type("19/08/2021")
-        cy.get(elementos.MOVIMENTACAO.dataPagamento).type("30/08/2021")
-        cy.get(elementos.MOVIMENTACAO.descricao).type(faker.random.word())
-        cy.get(elementos.MOVIMENTACAO.valor).type(faker.finance.routingNumber())
-        cy.get(elementos.MOVIMENTACAO.conta).select("Mathew Lueilwitz")
-        cy.get(elementos.MOVIMENTACAO.statusPago).click()
+        preencherCampos();
+        cy.get(elementos.MOVIMENTACAO.interessado).clear();
         salvarMovimentacao();
     }
 
     validarCampoValor() {
-        cy.get(elementos.MOVIMENTACAO.tipo).select("Receita")
-        cy.get(elementos.MOVIMENTACAO.dataMovimentacao).type("19/08/2021")
-        cy.get(elementos.MOVIMENTACAO.dataPagamento).type("30/08/2021")
-        cy.get(elementos.MOVIMENTACAO.descricao).type(faker.random.word())
-        cy.get(elementos.MOVIMENTACAO.interessado).type(faker.name.firstName())
-        cy.get(elementos.MOVIMENTACAO.conta).select("Mathew Lueilwitz")
-        cy.get(elementos.MOVIMENTACAO.statusPago).click()
+        preencherCampos();
+        cy.get(elementos.MOVIMENTACAO.valor).clear();
         salvarMovimentacao();
     }
 
     validarTipoCampoValor() {
-        cy.get(elementos.MOVIMENTACAO.tipo).select("Receita")
-        cy.get(elementos.MOVIMENTACAO.dataMovimentacao).type("19/08/2021")
-        cy.get(elementos.MOVIMENTACAO.dataPagamento).type("30/08/2021")
-        cy.get(elementos.MOVIMENTACAO.descricao).type(faker.random.word())
-        cy.get(elementos.MOVIMENTACAO.interessado).type(faker.name.firstName())
-        cy.get(elementos.MOVIMENTACAO.dataPagamento).select("Mathew Lueilwitz")
-
+        preencherCampos();
+        cy.get(elementos.MOVIMENTACAO.valor).clear();
         cy.get(elementos.MOVIMENTACAO.valor).type("mil e quinhentos")
-
-        cy.get(elementos.MOVIMENTACAO.statusPago).click()
         salvarMovimentacao();
     }
 
     salvarMovimentacaoSucesso() {
-        cy.get(elementos.MOVIMENTACAO.tipo).select("Despesa")
-        cy.get(elementos.MOVIMENTACAO.dataMovimentacao).type("01/09/2021")
-        cy.get(elementos.MOVIMENTACAO.dataPagamento).type("02/09/2021")
-        cy.get(elementos.MOVIMENTACAO.descricao).type(faker.random.word())
-        cy.get(elementos.MOVIMENTACAO.interessado).type(faker.name.firstName())
-        cy.get(elementos.MOVIMENTACAO.valor).type(faker.datatype.float())
-        cy.get(elementos.MOVIMENTACAO.conta).select("Conta 3Conta AlteradaConta Alterada")
-        cy.get(elementos.MOVIMENTACAO.statusPendente).click()
+        preencherCampos();
         salvarMovimentacao();
     }
 
 }
 
-function salvarMovimentacao() {
+function preencherCampos() {
+    cy.get(elementos.MOVIMENTACAO.tipo).select("Despesa")
+    cy.get(elementos.MOVIMENTACAO.dataMovimentacao).type("01/09/2021")
+    cy.get(elementos.MOVIMENTACAO.dataPagamento).type("02/09/2021")
+    cy.get(elementos.MOVIMENTACAO.descricao).type(faker.random.word())
+    cy.get(elementos.MOVIMENTACAO.interessado).type(faker.name.firstName())
+    cy.get(elementos.MOVIMENTACAO.valor).type(faker.datatype.float())
+    cy.get(elementos.MOVIMENTACAO.conta).select("MovimentacaoTeste")
+    cy.get(elementos.MOVIMENTACAO.statusPendente).click()
+}
+
+export function salvarMovimentacao() {
     cy.get(elementos.MOVIMENTACAO.botaoSalvar).click();
 }
 
 export function getMsgLista() {
-    return cy.get(elementos.MOVIMENTACAO.getMsgLista);
+    //'.alert > ul > :nth-child(1)'
+    //let vetor; let i = 0;
+
+
+    return cy.get(elementos.MOVIMENTACAO.alertMsgLista)
+    /*cy.get('.alert > ul >li')
+        .each(() => {
+            vetor = cy.get('.alert > ul > :nth-child(' + i + ')')
+            console.log(i)
+            i++;
+        })
+
+    console.log("vetor", vetor)*/
+    //return vetor;
 }
 
 export function getMsg() {
-    return cy.get(elementos.MOVIMENTACAO.getMsg);
+    return cy.get(elementos.MOVIMENTACAO.alertMsg);
 }
 
-export function limparCampos() {
-    cy.get(dataMovimentacao).clear();
-    cy.get(dataPagamento).clear();
-    cy.get(descricao).clear();
-    cy.get(interessado).clear();
-    cy.get(valor).clear();
-}
