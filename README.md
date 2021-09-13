@@ -28,7 +28,7 @@ O projeto foi desenvolvido utilizando as tecnologias e ferramentas:
 - Cypress
 - Javascript
 - VsCode
-- Biblioteca [Faker.js] (https://github.com/Marak/faker.js)
+- Biblioteca [Faker.js](https://github.com/Marak/faker.js)
 ---
 ## 📦 Como baixar o projeto
 ```bash    
