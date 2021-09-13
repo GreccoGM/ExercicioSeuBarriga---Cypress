@@ -25,7 +25,7 @@ Contem as validações:
 ---
 ## 🚀 Tecnologicas e ferramentas utilizadas
 O projeto foi desenvolvido utilizando as tecnologias e ferramentas:
-- Cypress
+- [Cypress](https://www.cypress.io/)
 - Javascript
 - VsCode
 - Biblioteca [Faker.js](https://github.com/Marak/faker.js)
